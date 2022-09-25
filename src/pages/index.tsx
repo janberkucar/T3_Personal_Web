@@ -16,7 +16,9 @@ const Home: NextPage = () => {
             From everywhere, easy, fast MTSK Management System
           </h2>
 
-          <h1 className="w-2/5 text-start text-4xl text-bold">Ustad Yazilim</h1>
+          <h1 className="w-2/5 text-start text-4xl text-bold">
+            Ustad Yazilim Test
+          </h1>
         </div>
       </main>
 
