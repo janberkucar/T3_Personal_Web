@@ -1,9 +1,13 @@
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
+import { prisma } from "../db/client";
+import TestData from "../utils/types/TestData";
+import { trpc } from "../utils/types/trpc";
 
-const Home: NextPage = () => {
+const Index: React.FC<{ props: TestData[] }> = (props) => {
+  const { data, isLoading } = trpc.useQuery(["hi"]);
+  if (isLoading || !data) return <div>Loading...</div>;
   return (
     <div className={styles.container}>
       <Head>
@@ -20,6 +24,10 @@ const Home: NextPage = () => {
             Ustad Yazilim Test
           </h1>
         </div>
+        <div className="test-data-container">
+          <h3>{props.test}</h3>
+          <h3>{data.greeting}</h3>
+        </div>
       </main>
 
       <footer className={styles.footer}></footer>
@@ -27,4 +35,13 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const testData = await prisma.test.findMany();
+  return {
+    props: {
+      test: JSON.stringify(testData),
+    },
+  };
+};
+
+export default Index;
